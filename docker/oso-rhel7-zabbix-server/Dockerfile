@@ -3,14 +3,15 @@
 # /usr/local/bin/start.sh will then start zabbix
 # Default login:password to Zabbix is Admin:zabbix
 
-FROM oso-rhel7-ops-base:latest
+FROM oso-centos-ops-base:latest
 
 EXPOSE 10050 10051
 
 # Lay down the zabbix repository
-RUN yum clean metadata && \
-    yum install -y openshift-ops-yum-zabbix && \
-    yum clean all
+# TODO: Use a COPR or get zabbix into epel
+# Currently this is the only repo that has zabbix-sender
+RUN rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX && \
+    rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
 
 # Install zabbix from zabbix repo
 RUN yum install -y zabbix-server-mysql zabbix-agent zabbix-sender crontabs mariadb && \

@@ -3,14 +3,13 @@
 # /root/start.sh will then start the httpd.
 # Default login:password to Zabbix is Admin:zabbix
 
-FROM oso-rhel7-ops-base:latest
+FROM oso-centos-ops-base:latest
 
 EXPOSE 8000
 
 # Lay down the zabbix repository
-RUN yum clean metadata && \
-    yum install -y openshift-ops-yum-zabbix && \
-    yum clean all
+RUN rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX && \
+    rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
 
 # Install zabbix from zabbix repo
 RUN yum install -y zabbix-web-mysql mariadb && \

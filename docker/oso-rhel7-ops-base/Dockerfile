@@ -1,9 +1,6 @@
-FROM rhel7:latest
+FROM centos:latest
 
 RUN echo "root:redhat" | chpasswd
-
-# get rid of subscript manager (we use our own mirrors)
-RUN touch /var/run/rhsm ; rpm -evh subscription-manager
 
 # creature comforts (make it feel like a normal linux environment)
 ENV LANG en_US.UTF-8
@@ -18,14 +15,8 @@ ADD bashrc /root/.bashrc
 ADD pythonrc /root/.pythonrc
 ENV PYTHONSTARTUP=/root/.pythonrc
 
-# setup epel repo
-RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-# setup yum repos
-ADD setup-yum.sh /usr/local/bin/setup-yum.sh
-RUN /usr/local/bin/setup-yum.sh
-
 RUN yum clean metadata && \
+    yum install -y epel-release && \
     yum -y install cronie ansible screen vim procps less ack tar psmisc && \
     yum -y update && \
     yum clean all
