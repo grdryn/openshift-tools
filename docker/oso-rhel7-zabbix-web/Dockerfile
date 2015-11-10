@@ -8,11 +8,11 @@ FROM oso-centos-ops-base:latest
 EXPOSE 8000
 
 # Lay down the zabbix repository
-RUN rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX && \
-    rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
+RUN curl -o /etc/yum.repos.d/ngompa-zabbix24-epel-7.repo \
+    https://copr.fedoraproject.org/coprs/ngompa/zabbix24/repo/epel-7/ngompa-zabbix24-epel-7.repo
 
 # Install zabbix from zabbix repo
-RUN yum install -y zabbix-web-mysql mariadb && \
+RUN yum install -y zabbix24-web-mysql mariadb && \
     yum -y update && \
     yum clean all
 
