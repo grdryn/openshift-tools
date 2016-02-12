@@ -3,16 +3,21 @@
 # /root/start.sh will then start the mysqldb, zabbix, and httpd services.
 # Default login:password to Zabbix is Admin:zabbix
 
-FROM oso-rhel7-ops-base:latest
+FROM oso-centos-ops-base:latest
+
+ADD rpms/ rpms/
+
+# Lay down the zabbix repository
+#RUN curl -o /etc/yum.repos.d/ngompa-zabbix24-epel-7.repo \
+#    https://copr.fedoraproject.org/coprs/ngompa/zabbix24/repo/epel-7/ngompa-zabbix24-epel-7.repo
 
 RUN yum clean metadata && \
     yum install -y iproute iputils pylint python-pip \
         python-requests python-django \
         python-passlib \
-        openshift-tools-web-zagg \
-        openshift-tools-scripts-monitoring \
         tree python-django-bash-completion httpd mod_ssl mod_wsgi \
         telnet bind-utils net-tools iproute && \
+ #   yum install -y rpms/*.rpm && \
     yum clean all
 
 RUN pip install djangorestframework && \

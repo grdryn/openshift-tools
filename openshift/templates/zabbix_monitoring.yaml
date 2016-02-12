@@ -3,47 +3,6 @@ kind: Template
 metadata:
   name: ops-zabbix-monitoring
 objects:
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      name: centos
-    name: centos
-  spec:
-    dockerImageRepository: library/centos:latest
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      name: oso-centos-ops-base
-    name: oso-centos-ops-base
-  spec:
-    tags:
-    - from:
-        kind: DockerImage
-        name: library/oso-centos-ops-base:latest
-      name: latest
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      name: oso-centos-zabbix-server
-    name: oso-centos-zabbix-server
-  spec: {}
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      name: oso-centos-zabbix-web
-    name: oso-centos-zabbix-web
-  spec: {}
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      name: oso-rhel7-zagg-web
-    name: oso-rhel7-zagg-web
-  spec: {}
 - apiVersion: v1beta3
   kind: DeploymentConfig
   metadata:
@@ -74,7 +33,7 @@ objects:
             value: ${MYSQL_DATABASE}
           - name: MYSQL_ROOT_PASSWORD
             value: ${MYSQL_PASSWORD}
-          image: openshift/mysql-55-centos7:latest
+          image: openshift/mysql-55-rhel7:latest
           imagePullPolicy: IfNotPresent
           name: mysql
           ports:
